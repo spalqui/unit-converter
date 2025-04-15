@@ -1,0 +1,33 @@
+{{- /*gotype:github.com/spalqui/unit-converter/templates/pages.Page*/ -}}
+{{ define "content" }}
+    <h1>Length</h1>
+
+    <form method="POST" action="/length">
+        <div class="mb-3">
+            <label for="value" class="form-label">Enter the length to convert</label>
+            <input type="number" class="form-control" id="value" name="value" placeholder="100">
+        </div>
+
+        <div class="mb-3">
+            <label for="value" class="form-label">Unit to convert from</label>
+            <select class="form-select" aria-label="Unit to convert from">
+                {{ range .Units }}
+                    <option value="{{ . }}">{{ . }}</option>
+                {{ end }}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="value" class="form-label">Unit to convert to</label>
+            <select class="form-select" aria-label="Unit to convert to">
+                {{ range .Units }}
+                    <option value="{{ . }}">{{ . }}</option>
+                {{ end }}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <button class="btn btn-primary" type="submit">Convert</button>
+        </div>
+    </form>
+{{ end }}
