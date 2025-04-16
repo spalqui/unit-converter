@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	lengthConverter := converter.NewLengthConverter()
+	lengthConverter := converter.NewUnitConverter()
 
 	lengthHandler := handlers.NewLengthHandler(lengthConverter)
 	weightHandler := handlers.NewWeightHandler()

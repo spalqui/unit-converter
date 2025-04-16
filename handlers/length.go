@@ -10,10 +10,10 @@ import (
 
 type Length struct {
 	templates map[string]*template.Template
-	service   *converter.LengthConverter
+	service   *converter.UnitConverter
 }
 
-func NewLengthHandler(service *converter.LengthConverter) *Length {
+func NewLengthHandler(service *converter.UnitConverter) *Length {
 	return &Length{
 		templates: map[string]*template.Template{
 			http.MethodGet: template.Must(template.ParseFiles("templates/layout.gohtml", "templates/pages/converter.gohtml")),
@@ -25,7 +25,7 @@ func NewLengthHandler(service *converter.LengthConverter) *Length {
 func (h *Length) Get(w http.ResponseWriter, _ *http.Request) {
 	page := pages.Converter{
 		Title: "Length",
-		Units: h.service.ListUnits(),
+		Units: h.service.ListLengthUnits(),
 	}
 
 	err := h.templates[http.MethodGet].Execute(w, page)

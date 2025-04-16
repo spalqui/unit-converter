@@ -6,7 +6,7 @@ import (
 )
 
 func TestLengthConverter_Convert(t *testing.T) {
-	converter := NewLengthConverter()
+	converter := NewUnitConverter()
 
 	tests := []struct {
 		name     string

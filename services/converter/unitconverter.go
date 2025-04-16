@@ -9,9 +9,16 @@ const (
 	LengthUnitFoot       = "Foot"
 	LengthUnitYard       = "Yard"
 	LengthUnitMile       = "Mile"
+
+	WeightUnitMilligram = "Milligram"
+	WeightUnitGram      = "Gram"
+	WeightUnitKilogram  = "Kilogram"
+	WeightUnitOunce     = "Ounce"
+	WeightUnitPound     = "Pound"
 )
 
 var conversionFactors = map[string]float64{
+	// Length
 	// Millimeter
 	"MillimeterToCentimeter": 0.1,
 	"MillimeterToMeter":      0.001,
@@ -83,13 +90,44 @@ var conversionFactors = map[string]float64{
 	"MileToInch":       63360,
 	"MileToFoot":       5280,
 	"MileToYard":       1760,
+
+	// Weight
+	// Milligram
+	"MilligramToGram":     0.001,
+	"MilligramToKilogram": 0.000001,
+	"MilligramToOunce":    1.0 / 28349.5,
+	"MilligramToPound":    1.0 / 453592,
+
+	// Gram
+	"GramToMilligram": 1000,
+	"GramToKilogram":  0.001,
+	"GramToOunce":     1.0 / 28.3495,
+	"GramToPound":     1.0 / 453.592,
+
+	// Kilogram
+	"KilogramToMilligram": 1000000,
+	"KilogramToGram":      1000,
+	"KilogramToOunce":     35.274,
+	"KilogramToPound":     2.20462,
+
+	// Ounce
+	"OunceToMilligram": 28349.5,
+	"OunceToGram":      28.3495,
+	"OunceToKilogram":  0.0283495,
+	"OunceToPound":     1.0 / 16,
+
+	// Pound
+	"PoundToMilligram": 453592,
+	"PoundToGram":      453.592,
+	"PoundToKilogram":  0.453592,
+	"PoundToOunce":     16,
 }
 
-type LengthConverter struct {
+type UnitConverter struct {
 	strategyMap map[string]ConvertStrategy
 }
 
-func NewLengthConverter() *LengthConverter {
+func NewUnitConverter() *UnitConverter {
 	strategyMap := make(map[string]ConvertStrategy)
 
 	for key, factor := range conversionFactors {
@@ -98,12 +136,12 @@ func NewLengthConverter() *LengthConverter {
 		}
 	}
 
-	return &LengthConverter{
+	return &UnitConverter{
 		strategyMap: strategyMap,
 	}
 }
 
-func (s *LengthConverter) ListUnits() []string {
+func (s *UnitConverter) ListLengthUnits() []string {
 	return []string{
 		LengthUnitMillimeter,
 		LengthUnitCentimeter,
@@ -116,7 +154,17 @@ func (s *LengthConverter) ListUnits() []string {
 	}
 }
 
-func (s *LengthConverter) Convert(value float64, unitFrom string, unitTo string) float64 {
+func (s *UnitConverter) ListWeightUnits() []string {
+	return []string{
+		WeightUnitMilligram,
+		WeightUnitGram,
+		WeightUnitKilogram,
+		WeightUnitOunce,
+		WeightUnitPound,
+	}
+}
+
+func (s *UnitConverter) Convert(value float64, unitFrom string, unitTo string) float64 {
 	k := generateStrategyMapKey(unitFrom, unitTo)
 
 	strategy, ok := s.strategyMap[k]
