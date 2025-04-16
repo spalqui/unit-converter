@@ -1,33 +1,53 @@
 {{- /*gotype:github.com/spalqui/unit-converter/templates/pages.Page*/ -}}
+{{ define "title" }}
+    Length
+{{ end }}
+
 {{ define "content" }}
     <h1>Length</h1>
 
-    <form method="POST" action="/length">
-        <div class="mb-3">
-            <label for="value" class="form-label">Enter the length to convert</label>
-            <input type="number" class="form-control" id="value" name="value" placeholder="100">
+    {{- if .Error }}
+        <div class="alert alert-danger" role="alert">
+            {{ .Error }}
+        </div>
+    {{- end }}
+
+    {{- if .Result }}
+        <div class="alert alert-success" role="alert">
+            {{ .Value }} {{ .UnitFrom }} is equal to {{ .Result }} {{ .UnitTo }}
         </div>
 
         <div class="mb-3">
-            <label for="value" class="form-label">Unit to convert from</label>
-            <select class="form-select" aria-label="Unit to convert from">
-                {{ range .Units }}
-                    <option value="{{ . }}">{{ . }}</option>
-                {{ end }}
-            </select>
+            <a class="btn btn-primary" href="/length">Reset</a>
         </div>
+    {{- else }}
+        <form method="POST" action="/length">
+            <div class="mb-3">
+                <label for="value" class="form-label">Enter the length to convert</label>
+                <input type="number" class="form-control" id="value" name="value" min="1">
+            </div>
 
-        <div class="mb-3">
-            <label for="value" class="form-label">Unit to convert to</label>
-            <select class="form-select" aria-label="Unit to convert to">
-                {{ range .Units }}
-                    <option value="{{ . }}">{{ . }}</option>
-                {{ end }}
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="unitFrom" class="form-label">Unit to convert from</label>
+                <select class="form-select" id="unitFrom" name="unitFrom" aria-label="Unit to convert from">
+                    {{- range .Units }}
+                        <option value="{{ . }}">{{ . }}</option>
+                    {{- end }}
+                </select>
+            </div>
 
-        <div class="mb-3">
-            <button class="btn btn-primary" type="submit">Convert</button>
-        </div>
-    </form>
-{{ end }}
+            <div class="mb-3">
+                <label for="unitTo" class="form-label">Unit to convert to</label>
+                <select class="form-select" id="unitTo" name="unitTo" aria-label="Unit to convert to">
+                    {{- range .Units }}
+                        <option value="{{ . }}">{{ . }}</option>
+                    {{- end }}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Convert</button>
+            </div>
+        </form>
+    {{- end }}
+{{- end }}

@@ -3,8 +3,6 @@ package handlers
 import (
 	"html/template"
 	"net/http"
-
-	"github.com/spalqui/unit-converter/templates/pages"
 )
 
 type Weight struct {
@@ -20,11 +18,7 @@ func NewWeightHandler() *Weight {
 }
 
 func (h *Weight) Get(w http.ResponseWriter, _ *http.Request) {
-	page := pages.Page{
-		Title: "Weight",
-	}
-
-	err := h.templates[http.MethodGet].Execute(w, page)
+	err := h.templates[http.MethodGet].Execute(w, nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

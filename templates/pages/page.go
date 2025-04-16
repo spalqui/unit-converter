@@ -1,7 +1,10 @@
 package pages
 
 type Page struct {
-	Title  string
-	Units  []string
-	Result string
+	Units    []string
+	UnitTo   string
+	UnitFrom string
+	Value    float64
+	Result   float64
+	Error    string
 }
