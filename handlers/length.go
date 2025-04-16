@@ -24,16 +24,7 @@ func NewLengthHandler(service *converter.LengthConverter) *Length {
 
 func (h *Length) Get(w http.ResponseWriter, _ *http.Request) {
 	page := pages.Page{
-		Units: []string{
-			"Millimeter",
-			"Centimeter",
-			"Meter",
-			"Kilometer",
-			"Inch",
-			"Foot",
-			"Yard",
-			"Mile",
-		},
+		Units: h.service.ListUnits(),
 	}
 
 	err := h.templates[http.MethodGet].Execute(w, page)

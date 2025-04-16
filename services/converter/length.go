@@ -28,6 +28,19 @@ func NewLengthConverter() *LengthConverter {
 	}
 }
 
+func (s *LengthConverter) ListUnits() []string {
+	return []string{
+		LengthUnitMillimeter,
+		LengthUnitCentimeter,
+		LengthUnitMeter,
+		LengthUnitKilometer,
+		LengthUnitInch,
+		LengthUnitFoot,
+		LengthUnitYard,
+		LengthUnitMile,
+	}
+}
+
 func (s *LengthConverter) Convert(value float64, unitFrom string, unitTo string) float64 {
 	k := generateStrategyMapKey(unitFrom, unitTo)
 
