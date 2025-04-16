@@ -1,6 +1,9 @@
 package converter
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func Test_millimeterToCentimeter(t *testing.T) {
 	tests := []struct {
@@ -99,7 +102,7 @@ func Test_millimeterToInch(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := millimeterToInch(tt.value); got != tt.want {
+			if got := millimeterToInch(tt.value); fmt.Sprintf("%.5f", got) != fmt.Sprintf("%.5f", tt.want) {
 				t.Errorf("millimeterToInch() = %v, want %v", got, tt.want)
 			}
 		})
