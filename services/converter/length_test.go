@@ -161,6 +161,32 @@ func Test_millimeterToYard(t *testing.T) {
 	}
 }
 
+func Test_millimeterToMile(t *testing.T) {
+	tests := []struct {
+		name  string
+		value float64
+		want  float64
+	}{
+		{
+			name:  "Convert 804672mm to mi",
+			value: 804672,
+			want:  0.5,
+		},
+		{
+			name:  "Convert 0mm to mi",
+			value: 0,
+			want:  0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := millimeterToMile(tt.value); fmt.Sprintf("%.5f", got) != fmt.Sprintf("%.5f", tt.want) {
+				t.Errorf("millimeterToMile() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func Test_centimeterToMillimeter(t *testing.T) {
 	tests := []struct {
 		name  string
