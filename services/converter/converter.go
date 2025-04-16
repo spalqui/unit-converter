@@ -7,5 +7,5 @@ type Converter interface {
 type ConvertStrategy func(value float64) float64
 
 func generateStrategyMapKey(unitFrom, unitTo string) string {
-	return unitFrom + "_" + unitTo
+	return unitFrom + "To" + unitTo
 }
