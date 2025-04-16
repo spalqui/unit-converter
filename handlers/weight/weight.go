@@ -27,7 +27,7 @@ func NewHandler(service *converter.UnitConverter) *Handler {
 
 func (h *Handler) Get(w http.ResponseWriter, _ *http.Request) {
 	page := pages.Converter{
-		Title: pageTitle,
+		Type:  pageTitle,
 		Units: h.service.ListWeightUnits(),
 	}
 
@@ -66,7 +66,7 @@ func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
 	result := h.service.Convert(value, unitFrom, unitTo)
 
 	page := pages.Converter{
-		Title:    pageTitle,
+		Type:     pageTitle,
 		Value:    value,
 		Result:   result,
 		UnitFrom: r.FormValue("unitFrom"),

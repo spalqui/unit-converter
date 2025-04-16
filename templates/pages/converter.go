@@ -1,7 +1,8 @@
 package pages
 
 type Converter struct {
-	Title    string
+	Type     string
+	URLPath  string
 	Units    []string
 	UnitTo   string
 	UnitFrom string
