@@ -4,18 +4,21 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/spalqui/unit-converter/services"
 	"github.com/spalqui/unit-converter/templates/pages"
 )
 
 type Length struct {
 	templates map[string]*template.Template
+	service   *services.LengthConverter
 }
 
-func NewLengthHandler() *Length {
+func NewLengthHandler(service *services.LengthConverter) *Length {
 	return &Length{
 		templates: map[string]*template.Template{
 			http.MethodGet: template.Must(template.ParseFiles("templates/layout.gohtml", "templates/pages/length.gohtml")),
 		},
+		service: service,
 	}
 }
 

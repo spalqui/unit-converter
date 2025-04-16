@@ -5,16 +5,17 @@ import (
 	"net/http"
 
 	"github.com/spalqui/unit-converter/handlers"
+	"github.com/spalqui/unit-converter/services"
 )
 
 func main() {
-	homeHandler := handlers.NewHomeHandler()
+	lengthConverter := services.NewLengthConverter()
 
-	lengthHandler := handlers.NewLengthHandler()
+	lengthHandler := handlers.NewLengthHandler(lengthConverter)
 	weightHandler := handlers.NewWeightHandler()
 	temperatureHandler := handlers.NewTemperatureHandler()
 
-	http.HandleFunc("GET /", homeHandler.Get)
+	http.HandleFunc("GET /", lengthHandler.Get)
 	http.HandleFunc("GET /length", lengthHandler.Get)
 	http.HandleFunc("GET /weight", weightHandler.Get)
 	http.HandleFunc("GET /temperature", temperatureHandler.Get)
