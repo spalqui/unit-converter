@@ -11,6 +11,7 @@ const (
 	LengthUnitMile       = "Mile"
 
 	millimetersPerInch = 25.4
+	millimetersPerFoot = 304.8
 )
 
 type LengthConverter struct {
@@ -24,6 +25,7 @@ func NewLengthConverter() *LengthConverter {
 	strategyMap[generateStrategyMapKey(LengthUnitMillimeter, LengthUnitMeter)] = millimeterToMeter
 	strategyMap[generateStrategyMapKey(LengthUnitMillimeter, LengthUnitKilometer)] = millimeterToKilometer
 	strategyMap[generateStrategyMapKey(LengthUnitMillimeter, LengthUnitInch)] = millimeterToInch
+	strategyMap[generateStrategyMapKey(LengthUnitMillimeter, LengthUnitFoot)] = millimeterToFoot
 
 	strategyMap[generateStrategyMapKey(LengthUnitCentimeter, LengthUnitMillimeter)] = centimeterToMillimeter
 
@@ -70,6 +72,10 @@ func millimeterToKilometer(value float64) float64 {
 
 func millimeterToInch(value float64) float64 {
 	return value / millimetersPerInch
+}
+
+func millimeterToFoot(value float64) float64 {
+	return value / millimetersPerFoot
 }
 
 func centimeterToMillimeter(value float64) float64 {

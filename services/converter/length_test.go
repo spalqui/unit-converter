@@ -109,6 +109,32 @@ func Test_millimeterToInch(t *testing.T) {
 	}
 }
 
+func Test_millimeterToFoot(t *testing.T) {
+	tests := []struct {
+		name  string
+		value float64
+		want  float64
+	}{
+		{
+			name:  "Convert 1700mm to ft",
+			value: 1700,
+			want:  5.57743,
+		},
+		{
+			name:  "Convert 0mm to in",
+			value: 0,
+			want:  0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := millimeterToFoot(tt.value); fmt.Sprintf("%.5f", got) != fmt.Sprintf("%.5f", tt.want) {
+				t.Errorf("millimeterToFoot() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func Test_centimeterToMillimeter(t *testing.T) {
 	tests := []struct {
 		name  string
