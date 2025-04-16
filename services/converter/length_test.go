@@ -135,6 +135,32 @@ func Test_millimeterToFoot(t *testing.T) {
 	}
 }
 
+func Test_millimeterToYard(t *testing.T) {
+	tests := []struct {
+		name  string
+		value float64
+		want  float64
+	}{
+		{
+			name:  "Convert 1500mm to yd",
+			value: 1500,
+			want:  1.64042,
+		},
+		{
+			name:  "Convert 0mm to yd",
+			value: 0,
+			want:  0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := millimeterToYard(tt.value); fmt.Sprintf("%.5f", got) != fmt.Sprintf("%.5f", tt.want) {
+				t.Errorf("millimeterToYard() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func Test_centimeterToMillimeter(t *testing.T) {
 	tests := []struct {
 		name  string
