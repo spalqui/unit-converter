@@ -86,6 +86,24 @@ func TestLengthConverter_Convert(t *testing.T) {
 		{"Convert 1mi to in", 1, LengthUnitMile, LengthUnitInch, 63360},
 		{"Convert 1mi to ft", 1, LengthUnitMile, LengthUnitFoot, 5280},
 		{"Convert 1mi to yd", 1, LengthUnitMile, LengthUnitYard, 1760},
+
+		// Celsius
+		{"Convert 0°C to °F", 0, TemperatureUnitCelsius, TemperatureUnitFahrenheit, 32},
+		{"Convert 0°C to K", 0, TemperatureUnitCelsius, TemperatureUnitKelvin, 273.15},
+		{"Convert 100°C to °F", 100, TemperatureUnitCelsius, TemperatureUnitFahrenheit, 212},
+		{"Convert 100°C to K", 100, TemperatureUnitCelsius, TemperatureUnitKelvin, 373.15},
+
+		// Fahrenheit
+		{"Convert 32°F to °C", 32, TemperatureUnitFahrenheit, TemperatureUnitCelsius, 0},
+		{"Convert 32°F to K", 32, TemperatureUnitFahrenheit, TemperatureUnitKelvin, 273.15},
+		{"Convert 212°F to °C", 212, TemperatureUnitFahrenheit, TemperatureUnitCelsius, 100},
+		{"Convert 212°F to K", 212, TemperatureUnitFahrenheit, TemperatureUnitKelvin, 373.15},
+
+		// Kelvin
+		{"Convert 273.15K to °C", 273.15, TemperatureUnitKelvin, TemperatureUnitCelsius, 0},
+		{"Convert 273.15K to °F", 273.15, TemperatureUnitKelvin, TemperatureUnitFahrenheit, 32},
+		{"Convert 373.15K to °C", 373.15, TemperatureUnitKelvin, TemperatureUnitCelsius, 100},
+		{"Convert 373.15K to °F", 373.15, TemperatureUnitKelvin, TemperatureUnitFahrenheit, 212},
 	}
 
 	for _, tt := range tests {

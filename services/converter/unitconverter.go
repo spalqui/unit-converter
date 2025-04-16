@@ -15,6 +15,10 @@ const (
 	WeightUnitKilogram  = "Kilogram"
 	WeightUnitOunce     = "Ounce"
 	WeightUnitPound     = "Pound"
+
+	TemperatureUnitCelsius    = "Celsius"
+	TemperatureUnitFahrenheit = "Fahrenheit"
+	TemperatureUnitKelvin     = "Kelvin"
 )
 
 var conversionFactors = map[string]float64{
@@ -123,6 +127,27 @@ var conversionFactors = map[string]float64{
 	"PoundToOunce":     16,
 }
 
+var temperatureConversionStrategies = map[string]ConvertStrategy{
+	"CelsiusToFahrenheit": func(value float64) float64 {
+		return (value * 9 / 5) + 32
+	},
+	"CelsiusToKelvin": func(value float64) float64 {
+		return value + 273.15
+	},
+	"FahrenheitToCelsius": func(value float64) float64 {
+		return (value - 32) * 5 / 9
+	},
+	"FahrenheitToKelvin": func(value float64) float64 {
+		return (value-32)*5/9 + 273.15
+	},
+	"KelvinToCelsius": func(value float64) float64 {
+		return value - 273.15
+	},
+	"KelvinToFahrenheit": func(value float64) float64 {
+		return (value-273.15)*9/5 + 32
+	},
+}
+
 type UnitConverter struct {
 	strategyMap map[string]ConvertStrategy
 }
@@ -134,6 +159,10 @@ func NewUnitConverter() *UnitConverter {
 		strategyMap[key] = func(value float64) float64 {
 			return value * factor
 		}
+	}
+
+	for key, strategy := range temperatureConversionStrategies {
+		strategyMap[key] = strategy
 	}
 
 	return &UnitConverter{
@@ -161,6 +190,14 @@ func (s *UnitConverter) ListWeightUnits() []string {
 		WeightUnitKilogram,
 		WeightUnitOunce,
 		WeightUnitPound,
+	}
+}
+
+func (s *UnitConverter) ListTemperatureUnits() []string {
+	return []string{
+		TemperatureUnitCelsius,
+		TemperatureUnitFahrenheit,
+		TemperatureUnitKelvin,
 	}
 }
 
