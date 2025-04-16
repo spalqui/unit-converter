@@ -16,14 +16,15 @@ type Length struct {
 func NewLengthHandler(service *converter.LengthConverter) *Length {
 	return &Length{
 		templates: map[string]*template.Template{
-			http.MethodGet: template.Must(template.ParseFiles("templates/layout.gohtml", "templates/pages/length.gohtml")),
+			http.MethodGet: template.Must(template.ParseFiles("templates/layout.gohtml", "templates/pages/converter.gohtml")),
 		},
 		service: service,
 	}
 }
 
 func (h *Length) Get(w http.ResponseWriter, _ *http.Request) {
-	page := pages.Page{
+	page := pages.Converter{
+		Title: "Length",
 		Units: h.service.ListUnits(),
 	}
 
@@ -61,7 +62,8 @@ func (h *Length) Post(w http.ResponseWriter, r *http.Request) {
 
 	result := h.service.Convert(value, unitFrom, unitTo)
 
-	page := pages.Page{
+	page := pages.Converter{
+		Title:    "Length",
 		Value:    value,
 		Result:   result,
 		UnitFrom: r.FormValue("unitFrom"),

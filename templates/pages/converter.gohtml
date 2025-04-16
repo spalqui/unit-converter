@@ -1,10 +1,10 @@
 {{- /*gotype:github.com/spalqui/unit-converter/templates/pages.Page*/ -}}
 {{ define "title" }}
-    Length
+    {{ .Title }}
 {{ end }}
 
 {{ define "content" }}
-    <h1>Length</h1>
+    <h1>{{ .Title }}</h1>
 
     {{- if .Error }}
         <div class="alert alert-danger" role="alert">

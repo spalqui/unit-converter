@@ -1,6 +1,7 @@
 package pages
 
-type Page struct {
+type Converter struct {
+	Title    string
 	Units    []string
 	UnitTo   string
 	UnitFrom string
