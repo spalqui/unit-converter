@@ -17,16 +17,19 @@ func main() {
 	weightHandler := weight.NewHandler(unitConverter)
 	temperatureHandler := temperature.NewHandler(unitConverter)
 
-	http.HandleFunc("GET /", lengthHandler.Get)
+	routes := map[string]func(http.ResponseWriter, *http.Request){
+		"GET /":             lengthHandler.Get,
+		"GET /length":       lengthHandler.Get,
+		"POST /length":      lengthHandler.Post,
+		"GET /weight":       weightHandler.Get,
+		"POST /weight":      weightHandler.Post,
+		"GET /temperature":  temperatureHandler.Get,
+		"POST /temperature": temperatureHandler.Post,
+	}
 
-	http.HandleFunc("GET /length", lengthHandler.Get)
-	http.HandleFunc("POST /length", lengthHandler.Post)
-
-	http.HandleFunc("GET /weight", weightHandler.Get)
-	http.HandleFunc("POST /weight", weightHandler.Post)
-
-	http.HandleFunc("GET /temperature", temperatureHandler.Get)
-	http.HandleFunc("POST /temperature", temperatureHandler.Post)
+	for path, handler := range routes {
+		http.HandleFunc(path, handler)
+	}
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
