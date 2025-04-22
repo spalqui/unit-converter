@@ -1,5 +1,7 @@
 package converter
 
+type ConvertStrategy func(value float64) float64
+
 const (
 	LengthUnitMillimeter = "Millimeter"
 	LengthUnitCentimeter = "Centimeter"
@@ -24,126 +26,149 @@ const (
 var conversionFactors = map[string]float64{
 	// Length
 	// Millimeter
-	"MillimeterToCentimeter": 0.1,
-	"MillimeterToMeter":      0.001,
-	"MillimeterToKilometer":  0.000001,
-	"MillimeterToInch":       1 / 25.4,
-	"MillimeterToFoot":       1 / 304.8,
-	"MillimeterToYard":       1 / 914.4,
-	"MillimeterToMile":       1.0 / 1609344,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitMillimeter): 1.0,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitCentimeter): 0.1,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitMeter):      0.001,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitKilometer):  0.000001,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitInch):       1 / 25.4,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitFoot):       1 / 304.8,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitYard):       1 / 914.4,
+	generateStrategyMapKey(LengthUnitMillimeter, LengthUnitMile):       1.0 / 1609344,
 
 	// Centimeter
-	"CentimeterToMillimeter": 10.0,
-	"CentimeterToMeter":      0.01,
-	"CentimeterToKilometer":  0.00001,
-	"CentimeterToInch":       1 / 2.54,
-	"CentimeterToFoot":       1 / 30.48,
-	"CentimeterToYard":       1 / 91.44,
-	"CentimeterToMile":       1 / 160934.4,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitCentimeter): 1.0,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitMillimeter): 10.0,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitMeter):      0.01,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitKilometer):  0.00001,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitInch):       1 / 2.54,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitFoot):       1 / 30.48,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitYard):       1 / 91.44,
+	generateStrategyMapKey(LengthUnitCentimeter, LengthUnitMile):       1 / 160934.4,
 
 	// Meter
-	"MeterToMillimeter": 1000,
-	"MeterToCentimeter": 100,
-	"MeterToKilometer":  0.001,
-	"MeterToInch":       39.3701,
-	"MeterToFoot":       3.28084,
-	"MeterToYard":       1.09361,
-	"MeterToMile":       0.000621371,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitMeter):      1.0,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitMillimeter): 1000,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitCentimeter): 100,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitKilometer):  0.001,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitInch):       39.3701,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitFoot):       3.28084,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitYard):       1.09361,
+	generateStrategyMapKey(LengthUnitMeter, LengthUnitMile):       0.000621371,
 
 	// Kilometer
-	"KilometerToMillimeter": 1000000,
-	"KilometerToCentimeter": 100000,
-	"KilometerToMeter":      1000,
-	"KilometerToInch":       39370.1,
-	"KilometerToFoot":       3280.84,
-	"KilometerToYard":       1093.61,
-	"KilometerToMile":       0.621371,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitKilometer):  1.0,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitMillimeter): 1000000,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitCentimeter): 100000,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitMeter):      1000,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitInch):       39370.1,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitFoot):       3280.84,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitYard):       1093.61,
+	generateStrategyMapKey(LengthUnitKilometer, LengthUnitMile):       0.621371,
 
 	// Inch
-	"InchToMillimeter": 25.4,
-	"InchToCentimeter": 2.54,
-	"InchToMeter":      0.0254,
-	"InchToKilometer":  0.0000254,
-	"InchToFoot":       1.0 / 12,
-	"InchToYard":       1.0 / 36,
-	"InchToMile":       1.0 / 63360,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitInch):       1.0,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitMillimeter): 25.4,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitCentimeter): 2.54,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitMeter):      0.0254,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitKilometer):  0.0000254,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitFoot):       1.0 / 12,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitYard):       1.0 / 36,
+	generateStrategyMapKey(LengthUnitInch, LengthUnitMile):       1.0 / 63360,
 
 	// Foot
-	"FootToMillimeter": 304.8,
-	"FootToCentimeter": 30.48,
-	"FootToMeter":      0.3048,
-	"FootToKilometer":  0.0003048,
-	"FootToInch":       12,
-	"FootToYard":       1.0 / 3,
-	"FootToMile":       1.0 / 5280,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitFoot):       1.0,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitMillimeter): 304.8,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitCentimeter): 30.48,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitMeter):      0.3048,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitKilometer):  0.0003048,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitInch):       12,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitYard):       1.0 / 3,
+	generateStrategyMapKey(LengthUnitFoot, LengthUnitMile):       1.0 / 5280,
 
 	// Yard
-	"YardToMillimeter": 914.4,
-	"YardToCentimeter": 91.44,
-	"YardToMeter":      0.9144,
-	"YardToKilometer":  0.0009144,
-	"YardToInch":       36,
-	"YardToFoot":       3,
-	"YardToMile":       1.0 / 1760,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitYard):       1.0,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitMillimeter): 914.4,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitCentimeter): 91.44,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitMeter):      0.9144,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitKilometer):  0.0009144,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitInch):       36,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitFoot):       3,
+	generateStrategyMapKey(LengthUnitYard, LengthUnitMile):       1.0 / 1760,
 
 	// Mile
-	"MileToMillimeter": 1609344,
-	"MileToCentimeter": 160934.4,
-	"MileToMeter":      1609.344,
-	"MileToKilometer":  1.609344,
-	"MileToInch":       63360,
-	"MileToFoot":       5280,
-	"MileToYard":       1760,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitMile):       1.0,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitMillimeter): 1609344,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitCentimeter): 160934.4,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitMeter):      1609.344,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitKilometer):  1.609344,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitInch):       63360,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitFoot):       5280,
+	generateStrategyMapKey(LengthUnitMile, LengthUnitYard):       1760,
 
 	// Weight
 	// Milligram
-	"MilligramToGram":     0.001,
-	"MilligramToKilogram": 0.000001,
-	"MilligramToOunce":    1.0 / 28349.5,
-	"MilligramToPound":    1.0 / 453592,
+	generateStrategyMapKey(WeightUnitMilligram, WeightUnitMilligram): 1.0,
+	generateStrategyMapKey(WeightUnitMilligram, WeightUnitGram):      0.001,
+	generateStrategyMapKey(WeightUnitMilligram, WeightUnitKilogram):  0.000001,
+	generateStrategyMapKey(WeightUnitMilligram, WeightUnitOunce):     1.0 / 28349.5,
+	generateStrategyMapKey(WeightUnitMilligram, WeightUnitPound):     1.0 / 453592,
 
 	// Gram
-	"GramToMilligram": 1000,
-	"GramToKilogram":  0.001,
-	"GramToOunce":     1.0 / 28.3495,
-	"GramToPound":     1.0 / 453.592,
+	generateStrategyMapKey(WeightUnitGram, WeightUnitGram):      1.0,
+	generateStrategyMapKey(WeightUnitGram, WeightUnitMilligram): 1000,
+	generateStrategyMapKey(WeightUnitGram, WeightUnitKilogram):  0.001,
+	generateStrategyMapKey(WeightUnitGram, WeightUnitOunce):     1.0 / 28.3495,
+	generateStrategyMapKey(WeightUnitGram, WeightUnitPound):     1.0 / 453.592,
 
 	// Kilogram
-	"KilogramToMilligram": 1000000,
-	"KilogramToGram":      1000,
-	"KilogramToOunce":     35.274,
-	"KilogramToPound":     2.20462,
+	generateStrategyMapKey(WeightUnitKilogram, WeightUnitKilogram):  1.0,
+	generateStrategyMapKey(WeightUnitKilogram, WeightUnitMilligram): 1000000,
+	generateStrategyMapKey(WeightUnitKilogram, WeightUnitGram):      1000,
+	generateStrategyMapKey(WeightUnitKilogram, WeightUnitOunce):     35.274,
+	generateStrategyMapKey(WeightUnitKilogram, WeightUnitPound):     2.20462,
 
 	// Ounce
-	"OunceToMilligram": 28349.5,
-	"OunceToGram":      28.3495,
-	"OunceToKilogram":  0.0283495,
-	"OunceToPound":     1.0 / 16,
+	generateStrategyMapKey(WeightUnitOunce, WeightUnitOunce):     1.0,
+	generateStrategyMapKey(WeightUnitOunce, WeightUnitMilligram): 28349.5,
+	generateStrategyMapKey(WeightUnitOunce, WeightUnitGram):      28.3495,
+	generateStrategyMapKey(WeightUnitOunce, WeightUnitKilogram):  0.0283495,
+	generateStrategyMapKey(WeightUnitOunce, WeightUnitPound):     1.0 / 16,
 
 	// Pound
-	"PoundToMilligram": 453592,
-	"PoundToGram":      453.592,
-	"PoundToKilogram":  0.453592,
-	"PoundToOunce":     16,
+	generateStrategyMapKey(WeightUnitPound, WeightUnitPound):     1.0,
+	generateStrategyMapKey(WeightUnitPound, WeightUnitMilligram): 453592,
+	generateStrategyMapKey(WeightUnitPound, WeightUnitGram):      453.592,
+	generateStrategyMapKey(WeightUnitPound, WeightUnitKilogram):  0.453592,
+	generateStrategyMapKey(WeightUnitPound, WeightUnitOunce):     16,
 }
 
 var temperatureConversionStrategies = map[string]ConvertStrategy{
-	"CelsiusToFahrenheit": func(value float64) float64 {
+	// Temperature
+	generateStrategyMapKey(TemperatureUnitCelsius, TemperatureUnitCelsius): func(value float64) float64 {
+		return value
+	},
+	generateStrategyMapKey(TemperatureUnitCelsius, TemperatureUnitFahrenheit): func(value float64) float64 {
 		return (value * 9 / 5) + 32
 	},
-	"CelsiusToKelvin": func(value float64) float64 {
+	generateStrategyMapKey(TemperatureUnitCelsius, TemperatureUnitKelvin): func(value float64) float64 {
 		return value + 273.15
 	},
-	"FahrenheitToCelsius": func(value float64) float64 {
+	generateStrategyMapKey(TemperatureUnitFahrenheit, TemperatureUnitFahrenheit): func(value float64) float64 {
+		return value
+	},
+	generateStrategyMapKey(TemperatureUnitFahrenheit, TemperatureUnitCelsius): func(value float64) float64 {
 		return (value - 32) * 5 / 9
 	},
-	"FahrenheitToKelvin": func(value float64) float64 {
+	generateStrategyMapKey(TemperatureUnitFahrenheit, TemperatureUnitKelvin): func(value float64) float64 {
 		return (value-32)*5/9 + 273.15
 	},
-	"KelvinToCelsius": func(value float64) float64 {
+	generateStrategyMapKey(TemperatureUnitKelvin, TemperatureUnitKelvin): func(value float64) float64 {
+		return value
+	},
+	generateStrategyMapKey(TemperatureUnitKelvin, TemperatureUnitCelsius): func(value float64) float64 {
 		return value - 273.15
 	},
-	"KelvinToFahrenheit": func(value float64) float64 {
+	generateStrategyMapKey(TemperatureUnitKelvin, TemperatureUnitFahrenheit): func(value float64) float64 {
 		return (value-273.15)*9/5 + 32
 	},
 }
@@ -210,4 +235,8 @@ func (s *UnitConverter) Convert(value float64, unitFrom string, unitTo string) f
 	}
 
 	return strategy(value)
+}
+
+func generateStrategyMapKey(unitFrom, unitTo string) string {
+	return unitFrom + "To" + unitTo
 }
