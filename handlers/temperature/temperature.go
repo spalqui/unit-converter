@@ -9,7 +9,10 @@ import (
 	"github.com/spalqui/unit-converter/templates/pages"
 )
 
-const pageTitle = "Temperature"
+const (
+	pageTitle   = "Temperature"
+	pageURLPath = "/temperature"
+)
 
 type Handler struct {
 	templates map[string]*template.Template
@@ -27,8 +30,9 @@ func NewHandler(service *converter.UnitConverter) *Handler {
 
 func (h *Handler) Get(w http.ResponseWriter, _ *http.Request) {
 	page := pages.Converter{
-		Type:  pageTitle,
-		Units: h.service.ListTemperatureUnits(),
+		Type:    pageTitle,
+		URLPath: pageURLPath,
+		Units:   h.service.ListTemperatureUnits(),
 	}
 
 	err := h.templates[http.MethodGet].Execute(w, page)
@@ -67,6 +71,7 @@ func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
 
 	page := pages.Converter{
 		Type:     pageTitle,
+		URLPath:  pageURLPath,
 		Value:    value,
 		Result:   result,
 		UnitFrom: r.FormValue("unitFrom"),
