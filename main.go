@@ -18,10 +18,13 @@ func main() {
 	temperatureHandler := temperature.NewHandler(unitConverter)
 
 	http.HandleFunc("GET /", lengthHandler.Get)
+
 	http.HandleFunc("GET /length", lengthHandler.Get)
 	http.HandleFunc("POST /length", lengthHandler.Post)
+
 	http.HandleFunc("GET /weight", weightHandler.Get)
 	http.HandleFunc("POST /weight", weightHandler.Post)
+
 	http.HandleFunc("GET /temperature", temperatureHandler.Get)
 	http.HandleFunc("POST /temperature", temperatureHandler.Post)
 
