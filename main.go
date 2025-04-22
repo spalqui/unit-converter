@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/spalqui/unit-converter/handlers/length"
 	"github.com/spalqui/unit-converter/handlers/temperature"
@@ -11,6 +12,11 @@ import (
 )
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+
 	unitConverter := converter.NewUnitConverter()
 
 	lengthHandler := length.NewHandler(unitConverter)
@@ -31,7 +37,9 @@ func main() {
 		http.HandleFunc(path, handler)
 	}
 
-	err := http.ListenAndServe(":8080", nil)
+	log.Printf("starting server on port %s", port)
+
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
